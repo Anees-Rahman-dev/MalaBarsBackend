@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="MalaBarsBackend/MalaBarsBackend.csproj" />
+  <Project Path="MalaBars.API/MalaBars.API.csproj" Id="b2b58332-1f89-426c-af3d-4aad96fed78c" />
+  <Project Path="MalaBars.Application/MalaBars.Application.csproj" Id="972d7bc3-4a97-4ee0-ad3d-2a1d53e11459" />
+  <Project Path="MalaBars.Domain/MalaBars.Domain.csproj" Id="556fa16a-c315-4b66-80aa-fc326c9d1047" />
+  <Project Path="MalaBars.Infrastructure/MalaBars.Infrastructure.csproj" Id="48cf1870-12c9-4566-839b-973af3927b32" />
 </Solution>
