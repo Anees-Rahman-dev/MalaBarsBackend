@@ -1,0 +1,6 @@
+@MalaBars.API_HostAddress = http://localhost:5226
+
+GET {{MalaBars.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
