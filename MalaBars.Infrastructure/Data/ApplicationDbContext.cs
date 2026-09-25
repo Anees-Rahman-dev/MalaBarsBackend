@@ -28,55 +28,54 @@ namespace MalaBars.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // User → CartItems
+            // User + CartItems
             modelBuilder.Entity<CartItem>()
                 .HasOne(c => c.User)
                 .WithMany()
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); //If a user is deleted, their cart items are automatically deleted.
 
-            // Product → CartItems
+            // Product + CartItems
             modelBuilder.Entity<CartItem>()
                 .HasOne(c => c.Product)
                 .WithMany()
                 .HasForeignKey(c => c.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // User → WishlistItems
+            // User + WishlistItems
             modelBuilder.Entity<WishlistItem>()
                 .HasOne(w => w.User)
                 .WithMany()
                 .HasForeignKey(w => w.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Product → WishlistItems
+            // Product + WishlistItems
             modelBuilder.Entity<WishlistItem>()
                 .HasOne(w => w.Product)
                 .WithMany()
                 .HasForeignKey(w => w.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // User → Orders
+            // User + Orders
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany()
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Order → OrderItems
+            // Order + OrderItems
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Product → OrderItems
+            // Product + OrderItems
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
                 .WithMany()
                 .HasForeignKey(oi => oi.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .OnDelete(DeleteBehavior.Restrict); //Restrict ...This protects your order history.
 
             // Decimal precision
             modelBuilder.Entity<Product>()

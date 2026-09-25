@@ -10,10 +10,4 @@
     <ProjectReference Include="..\MalaBars.Domain\MalaBars.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTO%27s\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
