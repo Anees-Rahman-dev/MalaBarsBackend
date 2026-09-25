@@ -1,6 +1,5 @@
 ﻿using MalaBars.Application.Interfaces;
 using MalaBars.Application.DTO_s;
-using MalaBars.Application.Interfaces;
 using MalaBars.Domain.Entities;
 
 namespace MalaBars.Application.Services;
@@ -31,7 +30,7 @@ public ProductService(IProductRepository productRepository)
         }).ToList();
     }
 
-    public async Task<ProductDto> GetByIdAsync(int id)
+    public async Task<ProductDto?> GetByIdAsync(int id)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
@@ -56,7 +55,7 @@ public ProductService(IProductRepository productRepository)
         }
     }
 
-    public async Task<ProductDto> CreateAsync(ProductDto product)
+    public async Task<ProductDto> AddAsync(ProductDto product)
     {
         var newProduct = new Product
         {

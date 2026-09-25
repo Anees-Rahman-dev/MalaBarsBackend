@@ -9,9 +9,9 @@ namespace MalaBars.Application.Interfaces
     {
         Task<List<ProductDto>> GetAllAsync();
 
-        Task<ProductDto?> GetbyIdAsync(int id);
+        Task<ProductDto?> GetByIdAsync(int id);
 
-        Task<ProductDto> CreateAsync(ProductDto product);
+        Task<ProductDto> AddAsync(ProductDto product);
 
         Task<bool> UpdateAsync(int id, ProductDto product);
 
