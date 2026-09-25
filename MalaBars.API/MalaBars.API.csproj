@@ -21,8 +21,4 @@
     <ProjectReference Include="..\MalaBars.Infrastructure\MalaBars.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
