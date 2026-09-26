@@ -24,7 +24,7 @@ namespace MalaBars.Infrastructure.Repositories
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products.FirstOrDefaultAsync(f => f.ProductId == id);
         }
 
         public async Task<Product> AddAsync(Product product)
