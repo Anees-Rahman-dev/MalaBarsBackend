@@ -14,6 +14,7 @@ namespace MalaBars.Infrastructure.Data
 
         }
         public DbSet<User> Users { get; set; } //This is where your entities become database tables.
+        
         public DbSet<Product> Products { get; set; }
 
         public DbSet<CartItem> cartItems { get; set; }

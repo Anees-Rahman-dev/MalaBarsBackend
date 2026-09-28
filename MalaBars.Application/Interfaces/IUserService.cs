@@ -1,10 +1,14 @@
-﻿using System;
+﻿using MalaBars.Application.DTO_s;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MalaBars.Application.Interfaces
 {
-    internal interface IUserService
+    public interface IUserService
     {
+        Task<UserDto> RegisterAsync(RegisterDto request);
+
+        Task<string?> LoginAsync(LoginDto request);
     }
 }
