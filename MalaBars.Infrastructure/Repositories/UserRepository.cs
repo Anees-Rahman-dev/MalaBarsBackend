@@ -36,5 +36,9 @@ namespace MalaBars.Infrastructure.Repositories
             return user;
         }
 
+        public async Task<List<User>> GetAllAsync()
+        {
+          return await _context.Users.ToListAsync();
+        } 
     }
 }
