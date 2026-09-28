@@ -12,7 +12,6 @@ namespace MalaBars.Application.DTO_s
 
         public string Category { get; set; } = string.Empty;
 
-        public decimal Salary { get; set; }
 
         public decimal Price { get; set; }
 

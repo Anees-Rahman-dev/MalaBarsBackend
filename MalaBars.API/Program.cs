@@ -13,15 +13,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --------------------------------------------------
-// Controllers
-// --------------------------------------------------
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// --------------------------------------------------
-// Swagger + JWT Authentication
-// --------------------------------------------------
+
+// Swagger and JWT Authentication
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -41,18 +39,17 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
-// --------------------------------------------------
+
 // Database
-// --------------------------------------------------
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
-// --------------------------------------------------
+
 // Dependency Injection
-// --------------------------------------------------
 
 // Product
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -65,9 +62,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 // JWT
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
-// --------------------------------------------------
+
 // JWT Authentication
-// --------------------------------------------------
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -90,19 +87,19 @@ builder.Services
         };
     });
 
-// --------------------------------------------------
+
 // Authorization
-// --------------------------------------------------
+
 builder.Services.AddAuthorization();
 
-// --------------------------------------------------
+ 
 // Build application
-// --------------------------------------------------
+ 
 var app = builder.Build();
 
-// --------------------------------------------------
+ 
 // Middleware
-// --------------------------------------------------
+ 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,6 +109,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Authentication must come before Authorization
+
 app.UseAuthentication();
 app.UseAuthorization();
 

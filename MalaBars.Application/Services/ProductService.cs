@@ -97,7 +97,6 @@ public ProductService(IProductRepository productRepository)
         else
         {
             existingProduct.Name = product.Name;
-            existingProduct.ProductId = product.ProductId;
             existingProduct.Category = product.Category;
             existingProduct.Price = product.Price;
             existingProduct.Description = product.Description;

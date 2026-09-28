@@ -43,6 +43,7 @@ namespace MalaBars.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ProductDto product)
         {
             var CreatedProduct = await _productService.AddAsync(product);
@@ -52,6 +53,7 @@ namespace MalaBars.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id, ProductDto product)
         {
             var updated = await _productService.UpdateAsync(id, product);
@@ -68,6 +70,7 @@ namespace MalaBars.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var deleted = await _productService.DeleteAsync(id);
