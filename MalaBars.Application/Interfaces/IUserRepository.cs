@@ -13,5 +13,9 @@ namespace MalaBars.Application.Interfaces
 
         Task<List<User>> GetAllAsync();
         Task<User> AddAsync(User user);
+
+        Task<bool> BlockAsync(int id);
+
+        Task<bool> UnblockAsync(int id);
     }
 }

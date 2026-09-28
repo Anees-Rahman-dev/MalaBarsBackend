@@ -40,5 +40,39 @@ namespace MalaBars.Infrastructure.Repositories
         {
           return await _context.Users.ToListAsync();
         } 
+
+        public async Task<bool> BlockAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if(user == null)
+            {
+                return false;
+            }
+            else
+            {
+                user.IsBlocked = true;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UnblockAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return false;
+            }
+            else
+            {
+            user.IsBlocked = false;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
