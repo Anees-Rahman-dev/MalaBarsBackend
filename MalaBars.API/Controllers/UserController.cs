@@ -89,8 +89,8 @@ namespace MalaBars.API.Controllers
 
         public async Task<IActionResult> UnBlockUser(int id)
         {
-            var Unblocked = await _userRepo.UnblockAsync();
-            if (Unblocked == null)
+            var Unblocked = await _userRepo.UnblockAsync(id);
+            if (!Unblocked )
             {
                 return NotFound();
             }

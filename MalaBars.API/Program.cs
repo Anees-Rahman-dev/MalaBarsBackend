@@ -59,6 +59,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+//Cart
+builder.Services.AddScoped<ICartRepository,CartRepository>();
+builder.Services.AddScoped<ICartService, CartService>();
+
 // JWT
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
