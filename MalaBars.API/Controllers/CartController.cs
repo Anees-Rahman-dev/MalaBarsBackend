@@ -22,7 +22,7 @@ namespace MalaBars.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);//So the user can only work with their own wishlist.
 
             if (userId == null)
                 return Unauthorized();
