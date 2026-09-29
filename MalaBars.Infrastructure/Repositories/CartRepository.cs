@@ -20,7 +20,7 @@ namespace MalaBars.Infrastructure.Repositories
     public async Task<List<CartItem>> GetByUserIdAsync(int userId)
         {
             return await _context.cartItems
-            .Include(c => c.ProductId)//when we get the user's cart, EF Core also loads the Product information.
+            .Include(c => c.Product)//when we get the user's cart, EF Core also loads the Product information.
             .Where(c => c.UserId == userId)
             .ToListAsync();
         }

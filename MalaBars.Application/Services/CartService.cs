@@ -37,7 +37,7 @@ namespace MalaBars.Application.Services
             }).ToList();
         }
 
-        public async Task<CartItemDto> AddToCartAsync(int userId,AddToCartDto request)
+        public async Task<CartItemDto?> AddToCartAsync(int userId,AddToCartDto request)
         {
             var product = await _productRepository.GetByIdAsync(request.ProductId);
 
