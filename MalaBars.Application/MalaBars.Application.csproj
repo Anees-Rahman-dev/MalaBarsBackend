@@ -14,4 +14,12 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\ANEES RAHMAN\source\repos\MalaBarsBackend\MalaBars.Application\DTO%27s\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\ANEES RAHMAN\source\repos\MalaBarsBackend\MalaBars.Application\DTO's\.editorconfig" />
+  </ItemGroup>
+
 </Project>

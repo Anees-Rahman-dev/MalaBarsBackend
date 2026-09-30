@@ -67,6 +67,10 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IWishlistRepository,WishlistRepository>();
 builder.Services.AddScoped<IWishlistService,WishlistService>();
 
+//Order
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 // JWT
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
