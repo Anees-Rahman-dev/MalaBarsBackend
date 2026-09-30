@@ -12,73 +12,81 @@ namespace MalaBars.Application.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public OrderService(IOrderRepository orderRepository,
         ICartRepository cartRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IUnitOfWork unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<OrderDto?> CreateOrderAsync(int userId)
         {
-            var cartItems = await _cartRepository.GetByUserIdAsync(userId);
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                var cartItems = await _cartRepository.GetByUserIdAsync(userId);
 
-            if (!cartItems.Any())
-           
-                return null;
-      
-             
+                if (!cartItems.Any())
+
+                    return null;
+
+
                 decimal totalAmount = 0;
 
-            var order = new Order
-            {
-                UserId = userId,
-                OrderDate = DateTime.UtcNow,
-                Status = "Pending"
-            };
-
-            foreach (var cartItem in cartItems) // getting the product and
-                // calculating total, creating order, reducing the stock, updating the product EndPoint.
-            {
-                var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
-                if (product == null)
-                    return null;
-
-                if (cartItem.Quantity > product.Stock)
-                    return null;
-
-                var ItemTotal = product.Price * cartItem.Quantity;
-
-                totalAmount += ItemTotal;
-
-                var orderItem = new OrderItem
+                var order = new Order
                 {
-                    ProductId = product.ProductId,
-                    Quantity = cartItem.Quantity,
-                    Price = product.Price
+                    UserId = userId,
+                    OrderDate = DateTime.UtcNow,
+                    Status = "Pending"
                 };
 
-                order.OrderItems.Add(orderItem);
+                foreach (var cartItem in cartItems) // getting the product and
+                                                    // calculating total, creating order, reducing the stock, updating the product EndPoint.
+                {
+                    var product = await _productRepository.GetByIdAsync(cartItem.ProductId);
 
-                product.Stock -= cartItem.Quantity;
+                    if (product == null)
+                        throw new Exception("Product not found.");
 
-                await _productRepository.UpdateAsync(product);//letting the product know that this particular product's this much quantity has reduced
-            }
+                    if (cartItem.Quantity > product.Stock)
+                        throw new Exception("Insufficient Stock.");
 
-            order.TotalAmount = totalAmount;
 
-            var orderCreated = await _orderRepository.CreateAsync(order);
+                    var ItemTotal = product.Price * cartItem.Quantity;
 
-            //after order creation clear that particular cart.
-            foreach (var cartItem in cartItems)
-            {
-                await _cartRepository.DeleteAsync(cartItem.CartItemId);
-            }
+                    totalAmount += ItemTotal;
 
-            return MapToDto(orderCreated);
+                    var orderItem = new OrderItem
+                    {
+                        ProductId = product.ProductId,
+                        Quantity = cartItem.Quantity,
+                        Price = product.Price
+                    };
+
+                    order.OrderItems.Add(orderItem);
+
+                    product.Stock -= cartItem.Quantity;
+
+                    await _productRepository.UpdateAsync(product);//letting the product know that this particular product's this much quantity has reduced
+                }
+
+                order.TotalAmount = totalAmount;
+
+                var orderCreated = await _orderRepository.CreateAsync(order);
+
+                //after order creation clear that particular cart.
+                foreach (var cartItem in cartItems)
+                {
+                    await _cartRepository.DeleteAsync(cartItem.CartItemId);
+                }
+
+                return MapToDto(orderCreated);
+            });
         }
 
         public async Task<List<OrderDto>> GetMyOrdersAsync(int userId)
