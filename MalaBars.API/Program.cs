@@ -71,6 +71,10 @@ builder.Services.AddScoped<IWishlistService,WishlistService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
+//Address
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+
 //transaction
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

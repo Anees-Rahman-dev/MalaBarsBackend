@@ -25,7 +25,9 @@ namespace MalaBars.Infrastructure.Data
 
         public DbSet<OrderItem> orderItems { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<Address> Addresses { get; set; }
+ 
+        protected override void OnModelCreating(ModelBuilder modelBuilder) //"Here are the detailed rules for how my entities are related."
         {
             base.OnModelCreating(modelBuilder);
 
@@ -76,7 +78,14 @@ namespace MalaBars.Infrastructure.Data
                 .HasOne(oi => oi.Product)
                 .WithMany()
                 .HasForeignKey(oi => oi.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); //Restrict ...This protects your order history.
+                .OnDelete(DeleteBehavior.Restrict); //Restrict ...This protects your order history.\
+
+            // Address + User
+            modelBuilder.Entity<Address>()
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Decimal precision
             modelBuilder.Entity<Product>()
