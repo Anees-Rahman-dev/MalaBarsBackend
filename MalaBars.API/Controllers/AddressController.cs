@@ -95,7 +95,7 @@ namespace MalaBars.API.Controllers
 
             if (userId == null)
             {
-            return Unauthorized();
+            return Unauthorized(); 
             }
 
             try

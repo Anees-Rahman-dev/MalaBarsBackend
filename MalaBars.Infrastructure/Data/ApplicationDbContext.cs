@@ -26,6 +26,8 @@ namespace MalaBars.Infrastructure.Data
         public DbSet<OrderItem> orderItems { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
  
         protected override void OnModelCreating(ModelBuilder modelBuilder) //"Here are the detailed rules for how my entities are related."
         {
@@ -87,6 +89,13 @@ namespace MalaBars.Infrastructure.Data
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Payment + Order
+            modelBuilder.Entity<Payment>()
+                .HasOne(P => P.Order)
+                .WithMany()
+                .HasForeignKey(P => P.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Decimal precision
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)
@@ -102,6 +111,10 @@ namespace MalaBars.Infrastructure.Data
 
             modelBuilder.Entity<OrderItem>()
                 .Property(oi => oi.Price)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
                 .HasPrecision(18, 2);
         }
 
