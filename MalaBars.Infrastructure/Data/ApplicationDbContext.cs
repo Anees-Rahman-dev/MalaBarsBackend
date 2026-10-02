@@ -96,6 +96,14 @@ namespace MalaBars.Infrastructure.Data
                 .HasForeignKey(P => P.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // order + Address
+
+            modelBuilder.Entity<Order>()
+                .HasOne(O => O.Address)
+                .WithMany()
+                .HasForeignKey(O => O.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);//We don't want an address deletion to accidentally delete an order.
+
             // Decimal precision
             modelBuilder.Entity<Product>()
                 .Property(p => p.Price)

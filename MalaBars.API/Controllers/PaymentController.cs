@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace MalaBars.API.Controllers
 {
     [ApiController]
-    [Route("api[controller]")]
+    [Route("api/[controller]")]
     [Authorize]
     public class PaymentController : ControllerBase
     {

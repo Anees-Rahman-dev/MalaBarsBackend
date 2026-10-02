@@ -12,38 +12,71 @@ namespace MalaBars.Application.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IAddressRepository _addressRepository;
+        private readonly IPaymentRepository _paymentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public OrderService(IOrderRepository orderRepository,
         ICartRepository cartRepository,
         IProductRepository productRepository,
+        IAddressRepository addressRepository,
+        IPaymentRepository paymentRepository,
         IUnitOfWork unitOfWork)
         {
             _orderRepository = orderRepository;
             _cartRepository = cartRepository;
             _productRepository = productRepository;
+            _addressRepository = addressRepository;
+            _paymentRepository = paymentRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OrderDto?> CreateOrderAsync(int userId)
+        public async Task<OrderDto?> CreateOrderAsync(int userId,CreateOrderDto request)
         {
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
+
+                //1- Validate address
+                var address = await _addressRepository.GetByIdAsync(request.AddressId);
+
+                if (address == null || address.UserId != userId)
+                    throw new Exception("Invalid Address");
+
+                //2- Get cart items for the user and check if there are any items in the cart
+                    
                 var cartItems = await _cartRepository.GetByUserIdAsync(userId);
 
                 if (!cartItems.Any())
 
                     return null;
 
+                //3- validate payment method
+
+                var allowedPaymentMethods = new[]
+                {
+                    "COD",
+                    "UPI",
+                    "Card"
+                };
+
+                if(!allowedPaymentMethods.Contains(
+                    request.PaymentMethod, StringComparer.OrdinalIgnoreCase))
+                {
+                    throw new Exception("Invalid payment method.");
+                }
 
                 decimal totalAmount = 0;
 
                 var order = new Order
                 {
                     UserId = userId,
+                    AddressId = request.AddressId,
                     OrderDate = DateTime.UtcNow,
                     Status = "Pending"
                 };
+
+                //4 - Create Order Items + reduce Stock
+
 
                 foreach (var cartItem in cartItems) // getting the product and
                                                     // calculating total, creating order, reducing the stock, updating the product EndPoint.
@@ -75,10 +108,28 @@ namespace MalaBars.Application.Services
                     await _productRepository.UpdateAsync(product);//letting the product know that this particular product's this much quantity has reduced
                 }
 
+                //5- Set total
                 order.TotalAmount = totalAmount;
 
+                //6- Create order
                 var orderCreated = await _orderRepository.CreateAsync(order);
 
+                //7- Create payment
+                var payment = new Payment
+                {
+                    OrderId = orderCreated.OrderId,
+                    Amount = totalAmount,
+                    PaymentMethod = request.PaymentMethod,
+                    PaymentStatus = request.PaymentMethod.Equals
+                    ("COD", StringComparison.OrdinalIgnoreCase)
+                    ? "Pending"
+                    : "Paid",
+                    PaymentDate = DateTime.UtcNow
+                };
+                await _paymentRepository.AddAsync(payment);
+
+
+                //8- Clear cart
                 //after order creation clear that particular cart.
                 foreach (var cartItem in cartItems)
                 {

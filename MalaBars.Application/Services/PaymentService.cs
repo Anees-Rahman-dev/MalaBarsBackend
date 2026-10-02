@@ -20,7 +20,7 @@ namespace MalaBars.Application.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<PaymentDto?> GetByOrderIdAsync(int orderId, int userId)
+        public async Task<PaymentDto?> GetByOrderIdAsync(int userId, int orderId )
         {
             var order = await _orderRepository.GetByIdAsync(orderId);
 

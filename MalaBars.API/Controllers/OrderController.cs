@@ -1,4 +1,5 @@
-﻿using MalaBars.Application.Interfaces;
+﻿using MalaBars.Application.DTO_s;
+using MalaBars.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,14 +18,14 @@ namespace MalaBars.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder()
+        public async Task<IActionResult> CreateOrder(CreateOrderDto request)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId == null)
                 return Unauthorized();
 
-            var order = await _orderService.CreateOrderAsync(int.Parse(userId));
+            var order = await _orderService.CreateOrderAsync(int.Parse(userId),request);
 
             if(order == null)
                 return BadRequest("Cart is empty or product stock is insufficient.");

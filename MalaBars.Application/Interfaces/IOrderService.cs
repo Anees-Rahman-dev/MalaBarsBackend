@@ -7,7 +7,7 @@ namespace MalaBars.Application.Interfaces
 {
     public interface IOrderService
     {
-        Task<OrderDto?> CreateOrderAsync(int userId);
+        Task<OrderDto?> CreateOrderAsync(int userId, CreateOrderDto request);
 
         Task<List<OrderDto>> GetMyOrdersAsync(int userId);
 

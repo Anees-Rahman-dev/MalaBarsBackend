@@ -18,6 +18,10 @@ namespace MalaBars.Domain.Entities
 
         public User User { get; set; } = null!;
 
+        public int AddressId { get; set; }
+
+        public Address Address { get; set; } = null!;
+
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
