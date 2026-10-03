@@ -78,9 +78,21 @@ namespace MalaBars.API.Controllers
             var updated = await _orderService.UpdateStatusAsync(orderId,status);
 
             if(!updated)
-                return NotFound("Order not found.");
+                return BadRequest("Invalid order status or order not found.");
 
             return Ok("Order status updated.");
+        }
+
+        [HttpGet("admin/{orderId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAdminOrderById(int orderId)
+        {
+            var order = await _orderService.GetAdminOrderByIdAsync(orderId);
+
+            if(order == null)
+                return NotFound("Order not found.");
+
+            return Ok(order);
         }
     }
 

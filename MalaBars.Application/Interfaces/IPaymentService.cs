@@ -8,5 +8,6 @@ namespace MalaBars.Application.Interfaces
     public interface IPaymentService
     {
         Task<PaymentDto?> GetByOrderIdAsync(int userId, int orderId);
+        Task<PaymentDto?> GetAdminPaymentByOrderIdAsync(int orderId);
     }
 }

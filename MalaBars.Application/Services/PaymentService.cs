@@ -43,5 +43,23 @@ namespace MalaBars.Application.Services
                 PaymentDate = payment.PaymentDate
             };
         }
+
+        public async Task<PaymentDto?> GetAdminPaymentByOrderIdAsync(int orderId)
+        {
+            var payment = await _paymentRepository.GetByOrderIdAsync(orderId);
+
+            if (payment == null)
+                return null;
+
+            return new PaymentDto
+            {
+                PaymentId = payment.PaymentId,
+                OrderId = payment.OrderId,
+                Amount = payment.Amount,
+                PaymentMethod = payment.PaymentMethod,
+                PaymentStatus = payment.PaymentStatus,
+                PaymentDate = payment.PaymentDate
+            };
+        }
     }
 }

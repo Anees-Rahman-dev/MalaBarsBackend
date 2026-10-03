@@ -31,6 +31,7 @@ namespace MalaBars.Infrastructure.Repositories
         public async Task<List<Order>> GetByUserIdAsync(int userId)
         {
             return await _context.orders
+                .Include(O => O.Address)
                 .Include(O => O.OrderItems)
                 .ThenInclude(O => O.Product)  //Order > OrderItems > Product
                 .Where(O => O.UserId == userId)
@@ -47,6 +48,7 @@ namespace MalaBars.Infrastructure.Repositories
         public async Task<Order?> GetByIdAsync(int orderId)
         {
             return await _context.orders
+                .Include(o => o.Address)
                 .Include(O => O.OrderItems)
                 .ThenInclude(O => O.Product) ////Order > OrderItems > Product
                 .FirstOrDefaultAsync(O => O.OrderId == orderId);
@@ -55,6 +57,7 @@ namespace MalaBars.Infrastructure.Repositories
         public async Task<List<Order>> GetAllAsync()
         {
             return await _context.orders
+                .Include(o => o.Address)
                 .Include(O => O.OrderItems)
                 .ThenInclude(O => O.Product)// //Order > OrderItems > Product
                 .ToListAsync();

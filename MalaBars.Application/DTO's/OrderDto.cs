@@ -11,6 +11,8 @@ namespace MalaBars.Application.DTO_s
         public decimal TotalAmount { get; set; }
         public string Status { get; set; } = string.Empty;
 
+        public OrderAddressDto? Address { get; set; }
+
         public List<OrderItemDto> OrderItems { get; set; } = new();
     }
 }

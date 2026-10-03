@@ -112,12 +112,14 @@ namespace MalaBars.Application.Services
                 order.TotalAmount = totalAmount;
 
                 //6- Create order
-                var orderCreated = await _orderRepository.CreateAsync(order);
+                var createdOrder = await _orderRepository.CreateAsync(order);
+
+                createdOrder.Address = address ; // setting the address to the order so that it can be returned in the response.
 
                 //7- Create payment
                 var payment = new Payment
                 {
-                    OrderId = orderCreated.OrderId,
+                    OrderId = createdOrder.OrderId,
                     Amount = totalAmount,
                     PaymentMethod = request.PaymentMethod,
                     PaymentStatus = request.PaymentMethod.Equals
@@ -136,7 +138,7 @@ namespace MalaBars.Application.Services
                     await _cartRepository.DeleteAsync(cartItem.CartItemId);
                 }
 
-                return MapToDto(orderCreated);
+                return MapToDto(createdOrder);
             });
         }
 
@@ -169,10 +171,39 @@ namespace MalaBars.Application.Services
 
         public async Task<bool> UpdateStatusAsync(int orderId, string status)
         {
+
+            var allowedStatuses = new[]
+            {
+                "Pending",
+                "Confirmed",
+                "Shipped",
+                "Delivered",
+                "Cancelled"
+            };
+
+            if (!allowedStatuses.Contains(status,StringComparer.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
             return await _orderRepository.UpdateStatusAsync(orderId, status);
         }
 
-        private static OrderDto MapToDto(Order order)
+
+        public async Task<OrderDto?> GetAdminOrderByIdAsync(int orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+
+            if (order == null)
+            {
+                return null;
+            }
+            else
+            {
+                return MapToDto(order);
+            }
+        }
+        private static OrderDto MapToDto(Order order)   
         {
             return new OrderDto
             {
@@ -180,6 +211,16 @@ namespace MalaBars.Application.Services
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 Status = order.Status,
+
+                Address = order.Address == null ? null : new OrderAddressDto
+                {
+                    FullName = order.Address.FullName,
+                    Phone = order.Address.Phone,
+                    AddressLine = order.Address.AddressLine,
+                    City = order.Address.City,
+                    State = order.Address.State,
+                    Pincode = order.Address.Pincode
+                },
 
                 OrderItems = order.OrderItems.Select(item => new OrderItemDto
                 {

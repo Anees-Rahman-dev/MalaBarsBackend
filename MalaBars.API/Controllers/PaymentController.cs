@@ -39,8 +39,23 @@ namespace MalaBars.API.Controllers
             {
                 return BadRequest("Something Went Wrong");
             }
-
            
         }
+
+        [HttpGet("admin/order/{orderId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAdminPaymentByOrderId(int orderId)
+        {
+            var payment = await _paymentService.GetAdminPaymentByOrderIdAsync(orderId);
+
+            if(payment == null)
+            {
+                return NotFound("Payment not found.");
+            }
+            else
+            {
+                return Ok(payment);
+            }
+        } 
     }
 }

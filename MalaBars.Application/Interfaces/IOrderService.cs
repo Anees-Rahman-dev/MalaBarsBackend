@@ -16,5 +16,7 @@ namespace MalaBars.Application.Interfaces
         Task<List<OrderDto>> GetAllOrdersAsync();
 
         Task<bool> UpdateStatusAsync(int orderId, string status);
+
+        Task<OrderDto?> GetAdminOrderByIdAsync(int orderId);
     }
 }
