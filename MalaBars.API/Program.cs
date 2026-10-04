@@ -1,11 +1,14 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MalaBars.Application.Interfaces;
 using MalaBars.Application.Services;
+using MalaBars.Application.Validators;
 using MalaBars.Infrastructure.Data;
 using MalaBars.Infrastructure.Repositories;
 using MalaBars.Infrastructure.Services;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
@@ -116,14 +119,22 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
- 
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+
+//Everything that starts with:
+
+//builder.Services.Add...
+
+//should generally happen before: var app = builder.Build();
+
 // Build application
- 
+
 var app = builder.Build();
 
- 
 // Middleware
- 
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
