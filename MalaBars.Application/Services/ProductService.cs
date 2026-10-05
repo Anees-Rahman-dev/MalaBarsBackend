@@ -72,6 +72,7 @@ public ProductService(IProductRepository productRepository)
 
         var createdProduct = await _productRepository.AddAsync(newProduct);
 
+        // var existingName = await _productRepository.
         return new ProductDto
         {
 

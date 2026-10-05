@@ -51,19 +51,8 @@ namespace MalaBars.Application.Services
                     return null;
 
                 //3- validate payment method
-
-                var allowedPaymentMethods = new[]
-                {
-                    "COD",
-                    "UPI",
-                    "Card"
-                };
-
-                if(!allowedPaymentMethods.Contains(
-                    request.PaymentMethod, StringComparer.OrdinalIgnoreCase))
-                {
-                    throw new Exception("Invalid payment method.");
-                }
+             // valiadting the payment method whether it is COD or Online. If not then throw an exception.
+            //using FluentValidation to validate the payment method. If the payment method is not COD or Online then throw an exception.
 
                 decimal totalAmount = 0;
 

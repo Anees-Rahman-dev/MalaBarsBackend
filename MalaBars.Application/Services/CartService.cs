@@ -45,9 +45,6 @@ namespace MalaBars.Application.Services
             
                 return null;
 
-            if (request.Quantity <= 0)
-                return null;
-
             if (request.Quantity > product.Stock)
                 return null;
 
@@ -98,9 +95,9 @@ namespace MalaBars.Application.Services
             };            
         }
 
-        public async Task<bool> UpdateQuantityAsync(int userId,int cartItemId, int quantity)
+        public async Task<bool> UpdateQuantityAsync(int userId,int cartItemId, UpdateCartQuantityDto request)
         {
-            if (quantity <= 0)
+            if (request.Quantity <= 0)
                 return false;
 
             var cartItems = await _cartRepository.GetByUserIdAsync(userId);
@@ -110,10 +107,10 @@ namespace MalaBars.Application.Services
             if (cartItem == null)
                 return false;
 
-            if (quantity > cartItem.Product.Stock)
+            if (request.Quantity > cartItem.Product.Stock)
                 return false;
 
-            cartItem.Quantity = quantity;
+            cartItem.Quantity = request.Quantity;
 
             return await _cartRepository.UpdateAsync(cartItem);
         }

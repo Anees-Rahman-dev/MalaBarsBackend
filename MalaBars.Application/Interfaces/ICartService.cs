@@ -10,7 +10,7 @@ namespace MalaBars.Application.Interfaces
     {
         Task<List<CartItemDto>> GetCartAsync(int id);
         Task<CartItemDto?> AddToCartAsync(int userId,AddToCartDto request);
-        Task<bool> UpdateQuantityAsync(int id,int userId,int quantity);
+        Task<bool> UpdateQuantityAsync(int id,int userId,UpdateCartQuantityDto request);
         Task<bool> RemoveAsync(int userId, int cartItemId);
     }
 }

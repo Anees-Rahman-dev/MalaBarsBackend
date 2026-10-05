@@ -49,7 +49,7 @@ namespace MalaBars.API.Controllers
         }
 
         [HttpPut("{cartItemId}")]
-        public async Task<IActionResult> UpdateQuantity(int cartItemId, [FromBody] int quantity)
+        public async Task<IActionResult> UpdateQuantity(int cartItemId, [FromBody] UpdateCartQuantityDto request)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -57,7 +57,7 @@ namespace MalaBars.API.Controllers
             if (userId == null)
                 return Unauthorized();
 
-            var updated = await _cartService.UpdateQuantityAsync(int.Parse(userId),cartItemId,quantity);
+            var updated = await _cartService.UpdateQuantityAsync(int.Parse(userId),cartItemId,request);
 
             if (!updated)
                 return BadRequest("Invalid cart item or quantity.");
