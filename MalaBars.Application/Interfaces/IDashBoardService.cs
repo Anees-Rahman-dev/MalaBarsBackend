@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MalaBars.Application.Interfaces
 {
-    internal interface IDashBoardService
+    public interface IDashBoardService
     {
     }
 }

@@ -4,7 +4,8 @@ using System.Text;
 
 namespace MalaBars.Application.Interfaces
 {
-    internal interface IDashBoardRepository
+    public interface IDashBoardRepository
     {
+
     }
 }

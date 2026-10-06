@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MalaBars.Infrastructure.Repositories
 {
-    internal class DashBoardRepository
+    public class DashBoardRepository
     {
     }
 }

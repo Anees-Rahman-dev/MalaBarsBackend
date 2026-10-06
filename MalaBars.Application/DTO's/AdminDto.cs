@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MalaBars.Application.Services
+namespace MalaBars.Application.DTO_s
 {
-    public class DashBoardService
+    public class AdminDto
     {
     }
 }
