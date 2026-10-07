@@ -82,6 +82,10 @@ builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+//Admin
+builder.Services.AddScoped<IAdminRepository,AdminRepository>();
+builder.Services.AddScoped<IAdminService,AdminService>();
+
 
 //transaction
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
