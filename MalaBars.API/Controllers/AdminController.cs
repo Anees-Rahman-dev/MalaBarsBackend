@@ -7,7 +7,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 namespace MalaBars.API.Controllers
 {
     [ApiController]
-    [Route("api/Admin")]
+    [Route("api/AdminDashboard")]
     [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace MalaBars.API.Controllers
 
         //Dashboard 
 
-        [HttpGet("stats")]
+        [HttpGet("allStats")]
         public async Task<IActionResult> GetStats()
         {
             return Ok(await _adminService.GetDashboardStatsAsync());

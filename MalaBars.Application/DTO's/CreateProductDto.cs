@@ -2,31 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace MalaBars.Application.DTO_s
 {
-    public class ProductDto
+    public class CreateProductDto
     {
-        public int ProductId { get; set; }
-
         public string Name { get; set; } = string.Empty;
-
         public string Category { get; set; } = string.Empty;
-
         public decimal Price { get; set; }
-
         public string Description { get; set; } = string.Empty;
-
-        // Cloudinary URL
-        public string Image { get; set; } = string.Empty;
-
-        // Image selected by admin
-        [JsonIgnore]
         public IFormFile? ImageFile { get; set; }
-
         public int Stock { get; set; }
-
         public decimal Rating { get; set; }
     }
 }

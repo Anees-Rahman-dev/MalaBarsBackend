@@ -7,12 +7,14 @@ namespace MalaBars.Application.Services;
 public class ProductService : IProductService
 {
 private readonly IProductRepository _productRepository;
+    private readonly ICloudinaryService _cloudinaryService;
 
-public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, ICloudinaryService cloudinaryService)
 {
-    _productRepository = productRepository;
-}
-
+        _productRepository = productRepository;
+        _cloudinaryService = cloudinaryService;
+    }
+    
     public async Task<List<ProductDto>> GetAllAsync()
     {
         var products = await _productRepository.GetAllAsync();
@@ -57,6 +59,16 @@ public ProductService(IProductRepository productRepository)
 
     public async Task<ProductDto> AddAsync(ProductDto product)
     {
+
+        if(product.ImageFile == null)
+        {
+            throw new Exception("Product image is required");
+        }
+
+        // Upload image to Cloudinary
+        var imageUrl = await _cloudinaryService.UploadImageAsync(
+            product.ImageFile);
+
         var newProduct = new Product
         {
 
@@ -64,7 +76,7 @@ public ProductService(IProductRepository productRepository)
             Category = product.Category,
             Price = product.Price,
             Description = product.Description,
-            Image = product.Image,
+            Image = imageUrl,
             Stock = product.Stock,
             Rating = product.Rating
 
@@ -95,16 +107,22 @@ public ProductService(IProductRepository productRepository)
         {
             return false;
         }
-        else
+
+        existingProduct.Name = product.Name;
+        existingProduct.Category = product.Category;
+        existingProduct.Price = product.Price;
+        existingProduct.Description = product.Description;
+        existingProduct.Rating = product.Rating;
+        existingProduct.Stock = product.Stock;
+
+        // Only upload a new image if the admin selected one
+        if (product.ImageFile != null)
         {
-            existingProduct.Name = product.Name;
-            existingProduct.Category = product.Category;
-            existingProduct.Price = product.Price;
-            existingProduct.Description = product.Description;
-            existingProduct.Rating = product.Rating;
-            existingProduct.Stock = product.Stock;
-            existingProduct.Image = product.Image;
+        var imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
+
+            existingProduct.Image = imageUrl;
         }
+
         return await _productRepository.UpdateAsync(existingProduct);
     }
 

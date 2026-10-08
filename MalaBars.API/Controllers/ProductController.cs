@@ -44,7 +44,8 @@ namespace MalaBars.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddProduct(ProductDto product)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> AddProduct([FromForm] ProductDto product)
         {
             var CreatedProduct = await _productService.AddAsync(product);
 
@@ -54,7 +55,8 @@ namespace MalaBars.API.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProduct(int id, ProductDto product)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm] ProductDto product)
         {
             var updated = await _productService.UpdateAsync(id, product);
 

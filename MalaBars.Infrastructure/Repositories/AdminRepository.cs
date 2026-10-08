@@ -119,7 +119,7 @@ namespace MalaBars.Infrastructure.Repositories
                 .OrderByDescending(O => O.OrderDate)
                 .ToListAsync();
         }
-
+  
         //Order management
 
         public async Task<List<Order>> GetAllOrdersAsync()

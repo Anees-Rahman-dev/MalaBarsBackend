@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using MalaBars.Application.Interfaces;
 using MalaBars.Application.Services;
 using MalaBars.Application.Validators;
+using MalaBars.Infrastructure;
 using MalaBars.Infrastructure.Data;
 using MalaBars.Infrastructure.Repositories;
 using MalaBars.Infrastructure.Services;
@@ -90,6 +91,12 @@ builder.Services.AddScoped<IAdminService,AdminService>();
 //transaction
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//Cloudinary
+builder.Services.Configure<CloudinarySettings>(
+    builder.Configuration.GetSection("CloudinarySettings"));
+
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+
 // JWT
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
@@ -136,6 +143,7 @@ builder.Services.AddFluentValidationAutoValidation();
 // Build application
 
 var app = builder.Build();
+
 
 // Middleware
 
