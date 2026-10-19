@@ -18,5 +18,8 @@ namespace MalaBars.Application.Interfaces
         Task<bool> UpdateStatusAsync(int orderId, string status);
 
         Task<OrderDto?> GetAdminOrderByIdAsync(int orderId);
+
+        Task<OrderDto?> CreateBuyNowOrderAsync(
+        int userId,BuyNowOrderDto request);
     }
 }

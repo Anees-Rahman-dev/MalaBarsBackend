@@ -31,7 +31,7 @@ namespace MalaBars.Application.Validators
                 .WithMessage("Image is required");
 
             RuleFor(x => x.Stock)
-                .NotEmpty()
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("Stock cannot be negative");
 
             RuleFor(x => x.Rating)

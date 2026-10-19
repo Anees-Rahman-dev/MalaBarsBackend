@@ -13,5 +13,6 @@ namespace MalaBars.Application.DTO_s
         public string Image { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal Total { get; set; }
+        public int Stock { get; set; }
     }
 }

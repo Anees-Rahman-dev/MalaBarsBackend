@@ -33,6 +33,7 @@ namespace MalaBars.Application.Services
                 Price = item.Product.Price,
                 Image = item.Product.Image,
                 Quantity = item.Quantity,
+                Stock = item.Product.Stock,
                 Total = item.Product.Price * item.Quantity
             }).ToList();
         }

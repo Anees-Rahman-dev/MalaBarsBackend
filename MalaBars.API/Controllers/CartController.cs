@@ -46,7 +46,7 @@ namespace MalaBars.API.Controllers
                 return BadRequest("Invalid product, quantity, or stock.");
 
             return Ok(cartItem);
-        }
+              }
 
         [HttpPut("{cartItemId}")]
         public async Task<IActionResult> UpdateQuantity(int cartItemId, [FromBody] UpdateCartQuantityDto request)
@@ -79,7 +79,7 @@ namespace MalaBars.API.Controllers
             if (!removed)
                 return NotFound("Cart item not found.");
 
-            return NoContent();
+                return NoContent();
         }
 
     }

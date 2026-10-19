@@ -192,6 +192,78 @@ namespace MalaBars.Application.Services
                 return MapToDto(order);
             }
         }
+
+
+        public async Task<OrderDto?> CreateBuyNowOrderAsync(
+            int userId,
+            BuyNowOrderDto request)
+        {
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                if (request.Quantity <= 0)
+                    throw new Exception("Quantity must be greater than zero.");
+
+                if (request.PaymentMethod != "COD" &&
+                    request.PaymentMethod != "Online")
+                    throw new Exception("Invalid payment method.");
+
+                var address = await _addressRepository
+                    .GetByIdAsync(request.AddressId);
+
+                if (address == null || address.UserId != userId)
+                    throw new Exception("Invalid address.");
+
+                var product = await _productRepository
+                    .GetByIdAsync(request.ProductId);
+
+                if (product == null)
+                    throw new Exception("Product not found.");
+
+                if (product.Stock < request.Quantity)
+                    throw new Exception("Insufficient stock.");
+
+                var order = new Order
+                {
+                    UserId = userId,
+                    AddressId = request.AddressId,
+                    OrderDate = DateTime.UtcNow,
+                    Status = "Pending"
+                };
+
+                var orderItem = new OrderItem
+                {
+                    ProductId = product.ProductId,
+                    Quantity = request.Quantity,
+                    Price = product.Price
+                };
+
+                order.OrderItems.Add(orderItem);
+
+                order.TotalAmount = product.Price * request.Quantity;
+
+                product.Stock -= request.Quantity;
+
+                await _productRepository.UpdateAsync(product);
+
+                var createdOrder = await _orderRepository.CreateAsync(order);
+
+                createdOrder.Address = address;
+
+                var payment = new Payment
+                {
+                    OrderId = createdOrder.OrderId,
+                    Amount = createdOrder.TotalAmount,
+                    PaymentMethod = request.PaymentMethod,
+                    PaymentStatus = "Pending",
+                    PaymentDate = DateTime.UtcNow
+                };
+
+                await _paymentRepository.AddAsync(payment);
+
+                return MapToDto(createdOrder);
+            });
+        }
+
         private static OrderDto MapToDto(Order order)   
         {
             return new OrderDto

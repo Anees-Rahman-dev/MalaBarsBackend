@@ -1,5 +1,6 @@
 ﻿using MalaBars.Application.DTO_s;
 using MalaBars.Application.Interfaces;
+using MalaBars.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -74,7 +75,7 @@ namespace MalaBars.API.Controllers
         [HttpPut("{orderId}/status")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateStatus(int orderId, [FromBody] string status)
-        {
+        { /////സാധാരണയായി JSON അല്ലെങ്കിൽ XML രൂപത്തിൽ വരുന്ന ഡാറ്റയെ C# ഒബ്‌ജക്റ്റുകളിലേക്ക് മാറ്റാൻ ഇത് സഹായിക്കുന്നു.
             var updated = await _orderService.UpdateStatusAsync(orderId,status);
 
             if(!updated)
@@ -94,7 +95,34 @@ namespace MalaBars.API.Controllers
 
             return Ok(order);
         }
+
+        [HttpPost("buy-now")]
+        public async Task<IActionResult> BuyNow(BuyNowOrderDto request)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+                return Unauthorized();
+
+            try
+            {
+                var order = await _orderService.CreateBuyNowOrderAsync(
+                    int.Parse(userId),request);
+
+                if(order == null)
+                
+                   return BadRequest("Unable to create order.");
+
+                return Ok(order);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
+    
 
 
 
