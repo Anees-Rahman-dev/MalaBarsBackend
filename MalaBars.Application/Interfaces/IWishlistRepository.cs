@@ -10,7 +10,7 @@ namespace MalaBars.Application.Interfaces
     {
         Task<List<WishlistItem>> GetByUserIdAsync(int userId);
 
-        Task<WishlistItem> GetByUserAndProductAsync(int userId, int productId);
+        Task<WishlistItem?> GetByUserAndProductAsync(int userId, int productId);
 
         Task<WishlistItem> AddAsync(WishlistItem wishlistItem);
 

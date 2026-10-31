@@ -43,7 +43,7 @@ namespace MalaBars.API.Controllers
         public async Task<IActionResult> ToggleBlock(int id)
         {
             var result = await _adminService.ToggleBlockUserAsync(id);
-            return result ? NoContent() : NotFound();
+            return result ? Ok(true) : NotFound();
         }
 
         [HttpPut("users/{id}/role")]

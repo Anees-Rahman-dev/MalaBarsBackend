@@ -19,5 +19,11 @@ namespace MalaBars.Domain.Entities
         public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
 
         public Order Order { get; set; } = null!;
+
+        public string? RazorpayOrderId { get; set; }
+
+        public string? RazorpayPaymentId { get; set; }
+
+        public string? RazorpaySignature { get; set; }
     }
 }

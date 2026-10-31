@@ -207,14 +207,12 @@ namespace MalaBars.Application.Services
                     request.PaymentMethod != "Online")
                     throw new Exception("Invalid payment method.");
 
-                var address = await _addressRepository
-                    .GetByIdAsync(request.AddressId);
+                var address = await _addressRepository.GetByIdAsync(request.AddressId);
 
                 if (address == null || address.UserId != userId)
                     throw new Exception("Invalid address.");
 
-                var product = await _productRepository
-                    .GetByIdAsync(request.ProductId);
+                var product = await _productRepository.GetByIdAsync(request.ProductId);
 
                 if (product == null)
                     throw new Exception("Product not found.");

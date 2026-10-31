@@ -9,5 +9,6 @@ namespace MalaBars.Application.Interfaces
     {
         Task<Payment> AddAsync(Payment payment);
         Task<Payment?> GetByOrderIdAsync(int orderId);
+        Task UpdateAsync(Payment payment);
     }
 }

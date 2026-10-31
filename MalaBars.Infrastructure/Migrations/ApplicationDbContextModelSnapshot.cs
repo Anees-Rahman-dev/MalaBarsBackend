@@ -180,6 +180,15 @@ namespace MalaBars.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RazorpayOrderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RazorpayPaymentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RazorpaySignature")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PaymentId");
 
                     b.HasIndex("OrderId");

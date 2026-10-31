@@ -31,5 +31,11 @@ namespace MalaBars.Infrastructure.Repositories
             return await _context.Payments.FirstOrDefaultAsync(p => p.OrderId == orderId);
         }
 
+        public async Task UpdateAsync(Payment payment)
+        {
+            _context.Payments.Update(payment);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
